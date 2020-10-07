@@ -52,15 +52,15 @@ class Swupdate_testPlugin(octoprint.plugin.SettingsPlugin,
 
 				stable_branch=dict(
 					name="Stable",
-					branch="master",
-					comittish=["master"]
+					branch="main",
+					comittish=["main"]
 				),
 
 				prerelease_branches=[
 					dict(
 						name="Release Candidate",
 						branch="rc",
-						comittish=["rc", "master"]
+						comittish=["rc", "main"]
 					)
 				],
 
