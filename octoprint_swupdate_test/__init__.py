@@ -50,6 +50,20 @@ class Swupdate_testPlugin(octoprint.plugin.SettingsPlugin,
 				repo="OctoPrint-SWUpdate-Testing",
 				current=self._plugin_version,
 
+				stable_branch=dict(
+					name="Stable",
+					branch="master",
+					comittish=["master"]
+				),
+
+				prerelease_branches=[
+					dict(
+						name="Release Candidate",
+						branch="rc",
+						comittish=["rc", "master"]
+					)
+				],
+
 				# update method: pip
 				pip="https://github.com/cp2004/OctoPrint-SWUpdate-Testing/archive/{target_version}.zip"
 			)
