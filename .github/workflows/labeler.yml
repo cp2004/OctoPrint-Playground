@@ -19,11 +19,15 @@ jobs:
               case 'edited': {
                 if (context.payload.issue.title.match(/\[request\]|feature request/i)) {
                   labels.push('request');
-                  setLabels = true;
+                  if (!labels.includes("solved"){
+                    labels.push('needs review');
+                    setLabels = true;
+                  }
                 }
                 if (context.payload.issue.title.match(/bug/i)) {
                   if (!labels.includes("confirmed bug")){
                     labels.push('potential bug');
+                    labels.push('needs review');
                     setLabels = true;
                   }
                 }
@@ -42,10 +46,3 @@ jobs:
                 labels: labels
               })
             }
-            
-      - name: potential bug assignment 
-        uses: srggrs/assign-one-project-github-action@1.2.0
-        if: contains(github.event.issue.labels.*.name, 'potential bug')
-        with:
-          project: 'https://github.com/cp2004/OctoPrint-Playground/projects/1'
-          column_name: 'To analyse'
