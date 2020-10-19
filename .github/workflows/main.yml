@@ -1,0 +1,27 @@
+name: Project management
+
+# Controls when the action will run. Triggers the workflow on push or pull request
+# events but only for the main branch
+on:
+  issues:
+    types: [opened, labeled]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    name: Assignment to project columns
+    steps: 
+      - name: Potential bug, needs analysis
+        uses: alex-page/github-project-automation-plus@v0.3.0
+        if: contains(github.event.issue.labels.*.name, 'potential bug')
+        with:
+          project: Test Project
+          column: To analyse
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Confirmed bug, needs fix
+        uses: alex-page/github-project-automation-plus@v0.3.0
+        if: contains(github.event.issue.labels.*.name, 'confirmed bug')
+        with:
+          project: Test Project
+          column: To fix
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
