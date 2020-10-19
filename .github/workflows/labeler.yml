@@ -21,6 +21,12 @@ jobs:
                   labels.push('request');
                   setLabels = true;
                 }
+                if (context.payload.issue.title.match(/bug/i)) {
+                  if (!labels.includes("confirmed bug")){
+                    labels.push('potential bug');
+                    setLabels = true;
+                  }
+                }:  
                 if (labels.length === 0) {
                   labels.push('needs triage');
                   setLabels = true;
