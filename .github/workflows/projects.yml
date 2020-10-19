@@ -1,0 +1,19 @@
+name: Assign Issues to Projects
+
+on:
+  issues:
+    types: [opened, labeled]
+env:
+  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+jobs:
+  assign_one_project:
+    runs-on: ubuntu-latest
+    name: Assign to project
+    steps:
+    - name: potential bug assignment 
+      uses: srggrs/assign-one-project-github-action@1.2.0
+      if: contains(github.event.issue.labels.*.name, 'potential bug')
+      with:
+        project: 'https://github.com/cp2004/OctoPrint-Playground/projects/1'
+        column_name: 'To analyse'
