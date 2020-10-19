@@ -4,11 +4,35 @@ on:
     types: [opened, edited]
 
 jobs:
-  triage:
+  label-opened-and-edited:
     runs-on: ubuntu-latest
     steps:
-    - uses: github/issue-labeler@v2.0
-      with:
-        repo-token: "${{ secrets.GITHUB_TOKEN }}"
-        configuration-path: .github/labeler.yml
-        enable-versioned-regex: 0
+      - uses: actions/github-script@v2
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            let labels = [];
+            let setLabels = false;
+            context.payload.issue.labels.forEach(label => { labels.push(label.name) });
+            switch (context.payload.action) {
+              case 'opened':
+              case 'edited': {
+                if (context.payload.issue.title.match(/\[request\]|feature request/i)) {
+                  labels.push('request');
+                  setLabels = true;
+                }
+                if (labels.length === 0) {
+                  labels.push('needs triage');
+                  setLabels = true;
+                }
+                break;
+              }
+            }
+            if (setLabels) {
+              github.issues.setLabels({
+                issue_number: context.issue.number,
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                labels: labels
+              })
+            }
